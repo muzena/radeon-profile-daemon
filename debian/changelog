@@ -1,0 +1,13 @@
+radeon-profile-daemon (0.2.4-201810282325~bionic) bionic; urgency=emergency
+
+  *  Added license 
+  *  Trivial spelling fix
+
+ -- Goran Vidovic (gogo) <trebelnik2@gmail.com>  Sun, 28 Oct 2018 23:25:05 +0100
+
+radeon-profile-daemon (0.2.4~bionic) bionic; urgency=emergency
+
+  * Initial release
+
+ -- Goran Vidovic (gogo) <trebelnik2@gmail.com>  Thu, 7 Jun 2018 19:37:05 +0100
+
