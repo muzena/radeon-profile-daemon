@@ -50,16 +50,17 @@ install: build
 		#cp $(CURDIR)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
 		###  Upstart start scrypt
 		#cp $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.conf $(DESTDIR)/etc/init
-		echo 'description "radeon-profile-daemon Upstart"' | tee /etc/init/radeon-profile-daemon.conf
-		echo 'author "gogo"' | tee --append /etc/init/radeon-profile-daemon.conf
-		echo '' | tee --append /etc/init/radeon-profile-daemon.conf
-		echo '# start on startup' | tee --append /etc/init/radeon-profile-daemon.conf
-		echo 'start on runlevel [2345]' | tee --append /etc/init/radeon-profile-daemon.conf
-		echo 'stop on shutdown|reboot' | tee --append /etc/init/radeon-profile-daemon.conf
-		echo '' | tee --append /etc/init/radeon-profile-daemon.conf
-		echo 'exec radeon-profile-daemon' | tee --append /etc/init/radeon-profile-daemon.conf
-		echo '' | tee --append /etc/init/radeon-profile-daemon.conf
-		echo 'respawn' | tee --append /etc/init/radeon-profile-daemon.conf
+		##  Add Upstart script
+		echo 'description "radeon-profile-daemon Upstart"' | tee $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo 'author "gogo"' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo '' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo '# start on startup' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo 'start on runlevel [2345]' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo 'stop on shutdown|reboot' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo '' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo 'exec radeon-profile-daemon' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo '' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo 'respawn' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
       
 		# Add here commands to install the package into debian/your_appname
 		cd builddir && $(MAKE) INSTALL_ROOT=$(DESTDIR) install
