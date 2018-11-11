@@ -1,4 +1,4 @@
-radeon-profile-daemon (0.2.4) trusty; urgency=emergency
+radeon-profile-daemon (0.2.5) trusty; urgency=emergency
 
   *  Added license 
   *  Trivial spelling fix
