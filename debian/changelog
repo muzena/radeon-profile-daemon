@@ -1,4 +1,4 @@
-radeon-profile-daemon (0.2.4-201810282325~bionic) bionic; urgency=emergency
+radeon-profile-daemon (0.2.4) bionic; urgency=emergency
 
   *  Added license 
   *  Trivial spelling fix
