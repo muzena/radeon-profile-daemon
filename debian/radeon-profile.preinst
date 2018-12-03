@@ -2,7 +2,8 @@
 set -e
 
 # Start Systemd or Upstart
-
+#systemdctl="which systemctl >/dev/null 2>&1"
+#if [ $systemdctl = systemctl]
 if [ -e "/bin/systemctl" ]; then
 		if [ -e "/etc/systemd/system/multi-user.target.wants/radeon-profile-daemon" ]; then
 			echo "Radeon profile daemon is enabled"
