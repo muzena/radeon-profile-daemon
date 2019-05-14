@@ -9,27 +9,25 @@ APPNAME := radeon-profile-daemon
 DESTDIR := $(CURDIR)/debian/$(APPNAME)
 #TR_DIR=$(CURDIR)/debian/$(APPNAME)/usr/share/qt4/translations
 
-builddir:
-		mkdir -p builddir
-
-builddir/Makefile: builddir
-		cd builddir && qmake PREFIX=/usr ../$(APPNAME)/$(APPNAME).pro
-
 build: build-stamp
+build-stamp:
 
-build-stamp: builddir/Makefile
-		dh_testdir
-		# Add here commands to compile the package.
-		cd builddir && $(MAKE) #$(MAKEFLAGS)
-		touch $@
+	# Build process
+	cd $(APPNAME)
+	qmake PREFIX=/usr ./$(APPNAME)/$(APPNAME).pro
+	make
+	# End of build process
+
+	touch build-stamp
 
 clean:
 		dh_testdir
 		dh_testroot
 		rm -f build-stamp
 		# Add here commands to clean up after the build process.
-		rm -rf builddir
+		# rm -rf builddir
 		dh_clean
+
 install: build
 		dh_testdir
 		dh_testroot
@@ -45,25 +43,16 @@ install: build
 		mkdir $(DESTDIR)/usr
 		mkdir $(DESTDIR)/usr/share
 		mkdir $(DESTDIR)/usr/bin
-		cp $(CURDIR)/builddir/$(APPNAME) $(DESTDIR)/usr/bin
+		#cp $(CURDIR)/$(APPNAME)/radeon-profile-daemon $(DESTDIR)/usr/bin
+		cp $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin
 		###  Systemd start scrypt
 		#cp $(CURDIR)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
+		#cp $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
 		###  Upstart start scrypt
-		#cp $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.conf $(DESTDIR)/etc/init
-		##  Add Upstart script
-		echo 'description "radeon-profile-daemon Upstart"' | tee $(DESTDIR)/etc/init/radeon-profile-daemon.conf
-		echo 'author "gogo"' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
-		echo '' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
-		echo '# start on startup' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
-		echo 'start on runlevel [2345]' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
-		echo 'stop on shutdown|reboot' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
-		echo '' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
-		echo 'exec radeon-profile-daemon' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
-		echo '' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
-		echo 'respawn' | tee --append $(DESTDIR)/etc/init/radeon-profile-daemon.conf
-      
+		cp $(CURDIR)/extra/radeon-profile-daemon.conf $(DESTDIR)/etc/init
+
 		# Add here commands to install the package into debian/your_appname
-		cd builddir && $(MAKE) INSTALL_ROOT=$(DESTDIR) install
+		$(MAKE) INSTALL_ROOT=$(DESTDIR) install
 # Build architecture-independent files here.
 binary-indep: build install
 # We have nothing to do by default.
