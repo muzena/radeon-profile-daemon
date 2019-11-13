@@ -51,16 +51,16 @@ install: build
 		#cp $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
 		###  Upstart start scrypt
 		#cp $(CURDIR)/extra/radeon-profile-daemon.conf $(DESTDIR)/etc/init
-		echo 'description "radeon-profile-daemon Upstart"
-author "gogo"
-
-# start on startup
-start on runlevel [2345]
-stop on shutdown|reboot
-
-exec radeon-profile-daemon
-
-respawn' > $(DESTDIR)/etc/init/radeon-profile-daemon.conf					
+		echo 'description "radeon-profile-daemon Upstart"' > $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo 'author "gogo"' >> $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo '' >> $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo '# start on startup' >> $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo 'start on runlevel [2345]' >> $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo 'stop on shutdown|reboot' >> $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo '' >> $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo 'exec radeon-profile-daemon' >> $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo '' >> $(DESTDIR)/etc/init/radeon-profile-daemon.conf
+		echo 'respawn' >> $(DESTDIR)/etc/init/radeon-profile-daemon.conf					
 
 		# Add here commands to install the package into debian/your_appname
 		$(MAKE) INSTALL_ROOT=$(DESTDIR) install
