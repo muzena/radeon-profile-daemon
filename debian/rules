@@ -14,6 +14,7 @@ build-stamp:
 
 	# Build process
 	cd $(APPNAME)
+	sed -i '15 s/^/# /' ./$(APPNAME)/$(APPNAME).pro
 	#qmake PREFIX=/usr ./$(APPNAME)/$(APPNAME).pro
 	qmake -qt=opt-qt56 PREFIX=/usr ./$(APPNAME)/$(APPNAME).pro
 	make
