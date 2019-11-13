@@ -1,0 +1,59 @@
+#!/bin/sh
+set -e
+
+# Start Systemd or Upstart
+
+if [ -e "/bin/systemctl" ]; then
+		if [ -e "/etc/systemd/system/multi-user.target.wants/radeon-profile-daemon" ]; then
+			echo "Radeon profile daemon is enabled"
+			echo "Continuing to start service"
+		else
+			echo "Radeon profile daemon is not enabled"
+			echo "Enabling radeon profile daemon"
+			systemctl enable radeon-profile-daemon.service
+		fi
+		sleep 2
+		echo "Systemd is installed"
+		echo "Starting Systemd"
+		systemctl start radeon-profile-daemon.service
+else
+		echo "Upstart is installed"
+		echo "Starting Upstart"
+		service radeon-profile-daemon start
+fi
+
+# https://stackoverflow.com/questions/394230/detect-the-os-from-a-bash-script
+###  awk -F= '/UBUNTU_CODENAME/ {print $2}' /etc/os-release
+###  cat /etc/os-release | grep '^UBUNTU_CODENAME' | awk -F=  '{ print $2 }'
+. /etc/os-release
+# Radeon profile dependencies repository
+#if [ `awk -F= '/UBUNTU_CODENAME/ {print $2}' /etc/os-release` = "xenial" ]
+if [ $UBUNTU_CODENAME = "xenial" ]
+    then
+        if [ -e "/etc/apt/sources.list.d/trebelnik-stefina-radeon-profile-dependencies-xenial.list" ]; 
+           then
+                echo "Radeon profile daemon dependencies repository exists"
+           else
+	            echo "Adding Radeon profile dependencies repository"
+	            echo '###   qt5 (=>5.7.1) dependency repository for Radeon profile
+deb http://ppa.launchpad.net/trebelnik-stefina/radeon-profile-dependencies/ubuntu xenial main
+deb-src http://ppa.launchpad.net/trebelnik-stefina/radeon-profile-dependencies/ubuntu xenial main' | tee /etc/apt/sources.list.d/trebelnik-stefina-radeon-profile-dependencies-xenial.list
+                wait $!
+                apt-get -qq update
+        fi
+elif [ $UBUNTU_CODENAME = "14.04" ]
+    then
+        if [ -e "/etc/apt/sources.list.d/trebelnik-stefina-radeon-profile-dependencies-trusty-trusty.list" ]; 
+           then
+                echo "Radeon profile daemon dependencies repository exists"
+           else
+	            echo "Adding Radeon profile dependencies repository"
+	            echo '###   qt5 (=>5.7.1) dependency repository for Radeon profile
+deb http://ppa.launchpad.net/trebelnik-stefina/radeon-profile-dependencies-trusty/ubuntu trusty main 
+deb-src http://ppa.launchpad.net/trebelnik-stefina/radeon-profile-dependencies-trusty/ubuntu trusty main ' | tee /etc/apt/sources.list.d/trebelnik-stefina-radeon-profile-dependencies-trusty-trusty.list
+                wait $!
+                apt-get -qq update
+        fi
+fi
+
+exit 0
