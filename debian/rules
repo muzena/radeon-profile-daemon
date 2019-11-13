@@ -43,9 +43,9 @@ install: build
 		###  Upstart directories
 		#mkdir $(DESTDIR)/etc
 		#mkdir $(DESTDIR)/etc/init
-		#mkdir $(DESTDIR)/usr
-		#mkdir $(DESTDIR)/usr/share
-		#mkdir $(DESTDIR)/usr/bin
+		mkdir $(DESTDIR)/usr
+		mkdir $(DESTDIR)/usr/share
+		mkdir $(DESTDIR)/usr/bin
 		#cp $(CURDIR)/$(APPNAME)/radeon-profile-daemon $(DESTDIR)/usr/bin
 		cp $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin
 		###  Systemd start scrypt
