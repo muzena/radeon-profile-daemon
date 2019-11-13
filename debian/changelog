@@ -1,3 +1,10 @@
+radeon-profile-daemon (0.2.6) bionic; urgency=emergency
+
+  *  New version 
+  *  Fix building
+  
+ -- Goran Vidovic (gogo) <trebelnik2@gmail.com>  Wen, 13 Nov 2019 15:17:05 +0100
+
 radeon-profile-daemon (0.2.5) trusty; urgency=emergency
 
   *  Added license 
