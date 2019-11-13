@@ -17,7 +17,7 @@ Standards-Version: 4.0.0
 Homepage: https://github.com/marazmista/radeon-profile-daemon
 
 Package: radeon-profile-daemon
-Architecture: amd64, i386
+Architecture: any
 Depends: xserver-xorg-video-ati | xserver-xorg-video-amdgpu, radeon-profile
 Description: Daemon for Radeon Profile
  AMD graphics card monitoring and tweaking tool.
