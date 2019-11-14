@@ -1,0 +1,8 @@
+#!/bin/sh
+set -x
+
+echo "Enabling radeon profile daemon"
+systemctl enable radeon-profile-daemon.service
+wait $!
+
+exit 0
