@@ -47,7 +47,18 @@ install: build
 		cp $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin
 		###  Systemd start scrypt
 		#cp $(CURDIR)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
-		cp $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
+		#cp $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
+		echo '[Unit]' > $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo 'Description=radeon-profile daemon' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo '' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo '[Service]' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo 'Type=simple' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo 'ExecStart=/usr/bin/radeon-profile-daemon' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo 'ExecStop=/usr/bin/killall radeon-profile-daemon' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo 'ExecReload=/usr/bin/killall radeon-profile-daemon && /usr/bin/radeon-profile-daemon' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo '' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo '[Install]' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo 'WantedBy=multi-user.target' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
 		###  Upstart start scrypt
 		#cp $(CURDIR)/extra/radeon-profile-daemon.conf $(DESTDIR)/etc/init
 
