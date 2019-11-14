@@ -1,8 +1,8 @@
 #!/bin/sh
 set -x
 
-echo "Enabling radeon profile daemon"
-systemctl enable radeon-profile-daemon.service
+echo "Disabling/removing radeon profile daemon symlink"
+systemctl disable radeon-profile-daemon.service
 wait $!
 
 exit 0
