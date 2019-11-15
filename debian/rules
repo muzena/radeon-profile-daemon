@@ -44,7 +44,7 @@ install: build
 		mkdir $(DESTDIR)/usr/share
 		mkdir $(DESTDIR)/usr/bin
 		#cp $(CURDIR)/$(APPNAME)/radeon-profile-daemon $(DESTDIR)/usr/bin
-		cp $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin
+		cp -r $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin
 		###  Systemd start scrypt
 		#cp $(CURDIR)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
 		#cp $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
