@@ -17,6 +17,6 @@ Homepage: https://github.com/marazmista/radeon-profile-daemon
 
 Package: radeon-profile-daemon
 Architecture: any
-Depends: xserver-xorg-video-ati | xserver-xorg-video-amdgpu, radeon-profile
+Depends: debhelper, build-essential, xserver-xorg-video-ati | xserver-xorg-video-amdgpu, gcc, gdb, qt5-default, libqt4-dev, qt4-qmake, qt5-qmake, radeon-profile
 Description: Daemon for Radeon Profile
  AMD graphics card monitoring and tweaking tool.

@@ -1,5 +1,31 @@
 #!/bin/sh
-set -e
+set -x
+
+#apt install -y git debhelper build-essential xserver-xorg-video-ati xserver-xorg-video-amdgpu \
+#              gcc gdb qt5-default libqt4-dev qt4-qmake qt5-qmake
+wait $!
+rm -rf /tmp/radeon-profile-daemon
+rm -rf /tmp/systemd-packaging
+wait $!
+cd /tmp
+git clone --depth 1 https://github.com/muzena/radeon-profile-daemon.git
+wait $!
+git clone --depth 1 https://github.com/muzena/radeon-profile-daemon.git -b systemd_packaging systemd-packaging
+wait $!
+cp -rf /tmp/systemd-packaging/debian /tmp/radeon-profile-daemon
+wait $!
+cd /radeon-profile-daemon
+wait $!
+qmake PREFIX=/usr /tmp/radeon-profile-daemon/radeon-profile-daemon/radeon-profile-daemon.pro
+wait $!
+make
+wait $!
+cp -f ./target/radeon-profile-daemon /usr/bin/
+wait $!
+chmod +x /usr/bin/radeon-profile-daemon
+wait $!
+#apt-get remove -y git debhelper build-essential gcc gdb qt5-default libqt4-dev qt4-qmake qt5-qmake
+#wait $!
 
 # Start Systemd or Upstart
 
