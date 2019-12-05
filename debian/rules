@@ -34,13 +34,17 @@ install: build
 		#dh_clean -k
 		dh_prep
 		dh_installdirs
-		install -p -dm 0755 $(DESTDIR)/usr/bin
+		#install -p -dm 0755 $(DESTDIR)/usr/bin
+		install -pdm755 $(DESTDIR)/usr/bin
 		###  Systemd directories
-		install -p -dm 0755 $(DESTDIR)/lib/systemd/system
+		#install -p -dm 0755 $(DESTDIR)/lib/systemd/system
+		install -pdm755 $(DESTDIR)/lib/systemd/system
 		###  Copy radeon-profile-daemon
-		install -p -m 0755 $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin/
+		#install -p -m 0755 $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin/
+		install -Dm664 $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin/
 		###  Systemd start scrypt
 		#install -p -m 0755  $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
+		#install -Dm664  $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
 		echo '[Unit]' > $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
 		echo 'Description=radeon-profile daemon' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
 		echo '' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
