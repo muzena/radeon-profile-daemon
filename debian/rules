@@ -2,12 +2,15 @@
 #export DH_VERBOSE=1
 # This is the debhelper compatability version to use.
 
-#MAKEFLAGS="-j $(grep -c ^processor /proc/cpuinfo)"
+MY_MAKEFLAGS=
+ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+  NUMJOBS=$(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+  MY_MAKEFLAGS=-j$(NUMJOBS)
+endif
 
 #export DH_COMPAT=3
 APPNAME := radeon-profile-daemon
 DESTDIR := $(CURDIR)/debian/$(APPNAME)
-#TR_DIR=$(CURDIR)/debian/$(APPNAME)/usr/share/qt4/translations
 
 build: build-stamp
 build-stamp:
@@ -18,7 +21,7 @@ build-stamp:
 	#sed -i '15 s/^/# /' ./$(APPNAME)/$(APPNAME).pro
 	#qmake PREFIX=/usr ./$(APPNAME)/$(APPNAME).pro
 	qmake -qt=opt-qt59 PREFIX=/usr ./$(APPNAME)/$(APPNAME).pro
-	make
+	make $(MY_MAKEFLAGS)
 	# End of build process
 
 	touch build-stamp
@@ -28,34 +31,32 @@ clean:
 		dh_testroot
 		rm -f build-stamp
 		# Add here commands to clean up after the build process.
-		# rm -rf builddir
 		dh_clean
-
+		
 install: build
 		dh_testdir
 		dh_testroot
-		dh_clean -k
+		dh_prep
 		dh_installdirs
+		install -pdm755 $(DESTDIR)/usr/bin
 		###  Systemd directories
-		mkdir $(DESTDIR)/lib
-		mkdir $(DESTDIR)/lib/systemd
-		mkdir $(DESTDIR)/lib/systemd/system
-		###  Upstart directories
-		#mkdir $(DESTDIR)/etc
-		#mkdir $(DESTDIR)/etc/init
-		mkdir $(DESTDIR)/usr
-		mkdir $(DESTDIR)/usr/share
-		mkdir $(DESTDIR)/usr/bin
-		#cp $(CURDIR)/$(APPNAME)/radeon-profile-daemon $(DESTDIR)/usr/bin
-		cp $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin
+		install -pdm755 $(DESTDIR)/lib/systemd/system
+		###  Copy radeon-profile-daemon
+		install -Dm664 $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin/
 		###  Systemd start scrypt
-		#cp $(CURDIR)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
-		cp $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
-		###  Upstart start scrypt
-		#cp $(CURDIR)/extra/radeon-profile-daemon.conf $(DESTDIR)/etc/init				
+		#install -Dm664  $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
+		echo '[Unit]' > $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo 'Description=radeon-profile daemon' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo '' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo '[Service]' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo 'Type=simple' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo 'ExecStart=/usr/bin/radeon-profile-daemon' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo 'ExecStop=/usr/bin/killall radeon-profile-daemon' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo 'ExecReload=/usr/bin/killall radeon-profile-daemon && /usr/bin/radeon-profile-daemon' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo '' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo '[Install]' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
+		echo 'WantedBy=multi-user.target' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
 
-		# Add here commands to install the package into debian/your_appname
-		$(MAKE) INSTALL_ROOT=$(DESTDIR) install
 # Build architecture-independent files here.
 binary-indep: build install
 # We have nothing to do by default.
