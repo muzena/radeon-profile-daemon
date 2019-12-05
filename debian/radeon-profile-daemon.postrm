@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+echo "Disabling/removing radeon profile daemon symlink"
+systemctl disable radeon-profile-daemon.service
+wait $!
+#rm -f /usr/bin/radeon-profile-daemon
+
+exit 0

@@ -1,0 +1,62 @@
+#!/bin/sh
+set -x
+
+#apt install -y git debhelper build-essential xserver-xorg-video-ati xserver-xorg-video-amdgpu \
+#              gcc gdb qt5-default libqt4-dev qt4-qmake qt5-qmake
+#wait $!
+#rm -rf /tmp/radeon-profile-daemon
+#rm -rf /tmp/systemd-packaging
+#wait $!
+#cd /tmp
+#git clone --depth 1 https://github.com/muzena/radeon-profile-daemon.git
+#wait $!
+#git clone --depth 1 https://github.com/muzena/radeon-profile-daemon.git -b systemd_packaging systemd-packaging
+#wait $!
+#cp -rf /tmp/systemd-packaging/debian /tmp/radeon-profile-daemon
+#wait $!
+#cd /radeon-profile-daemon
+#wait $!
+#qmake PREFIX=/usr /tmp/radeon-profile-daemon/radeon-profile-daemon/radeon-profile-daemon.pro
+#wait $!
+#make
+#wait $!
+#cp -f ./target/radeon-profile-daemon /usr/bin/
+#wait $!
+#chmod +x /usr/bin/radeon-profile-daemon
+#wait $!
+#apt-get remove -y git debhelper build-essential gcc gdb qt5-default libqt4-dev qt4-qmake qt5-qmake
+#wait $!
+
+# Start Systemd or Upstart
+
+if [ -e "/bin/systemctl" ]; then
+		if [ -e "/etc/systemd/system/multi-user.target.wants/radeon-profile-daemon" ]; then
+			echo "Radeon profile daemon is enabled"
+			echo "Continuing to start service"
+		else
+			echo "Radeon profile daemon is not enabled"
+			echo "Enabling radeon profile daemon"
+			systemctl enable radeon-profile-daemon.service
+		fi
+		sleep 2
+		echo "Systemd is installed"
+		echo "Starting Systemd"
+		systemctl start radeon-profile-daemon.service
+else
+		echo "Upstart is installed"
+		echo "Starting Upstart"
+	        echo 'description "radeon-profile-daemon Upstart"
+author "gogo"
+
+# start on startup
+start on runlevel [2345]
+stop on shutdown|reboot
+
+exec radeon-profile-daemon
+
+respawn' | tee /etc/init/radeon-profile-daemon.conf
+		wait $!
+		service radeon-profile-daemon start
+fi
+
+exit 0
