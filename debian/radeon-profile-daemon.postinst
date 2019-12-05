@@ -19,18 +19,6 @@ if [ -e "/bin/systemctl" ]; then
 else
 		echo "Upstart is installed"
 		echo "Starting Upstart"
-	        echo 'description "radeon-profile-daemon Upstart"
-author "gogo"
-
-# start on startup
-start on runlevel [2345]
-stop on shutdown|reboot
-
-exec radeon-profile-daemon
-
-respawn' | tee /etc/init/radeon-profile-daemon.conf
-		wait $!
-		service radeon-profile-daemon start
 fi
 
 exit 0
