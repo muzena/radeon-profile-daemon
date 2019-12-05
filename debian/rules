@@ -34,33 +34,13 @@ install: build
 		#dh_clean -k
 		dh_prep
 		dh_installdirs
+		install -p -dm 0755 $(DESTDIR)/usr/bin
 		###  Systemd directories
 		install -p -dm 0755 $(DESTDIR)/lib/systemd/system
-		###  Upstart directories
-		#install -p -dm 0755 $(DESTDIR)/etc/init
-		#install -p -dm 0755 $(DESTDIR)/usr/share
-		install -p -dm 0755 $(DESTDIR)/usr/bin
-		#install -p -dm 0755 
-		#install -p -dm 0755 
-		#install -p -dm 0755 
-		#install -p -dm 0755 
+		###  Copy radeon-profile-daemon
 		install -p -m 0755 $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin/
-		#######################
-		#mkdir $(DESTDIR)/lib
-		#mkdir $(DESTDIR)/lib/systemd
-		#mkdir $(DESTDIR)/lib/systemd/system
-		###  Upstart directories
-		#mkdir $(DESTDIR)/etc
-		#mkdir $(DESTDIR)/etc/init
-		#mkdir $(DESTDIR)/usr
-		#mkdir $(DESTDIR)/usr/share
-		#mkdir $(DESTDIR)/usr/bin
-		#cp $(CURDIR)/$(APPNAME)/radeon-profile-daemon $(DESTDIR)/usr/bin
-		#cp -r $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin/
-		#cp $(CURDIR)/target/$(APPNAME)/$(APPNAME) $(DESTDIR)/usr/bin/
 		###  Systemd start scrypt
-		#cp $(CURDIR)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
-		#cp $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
+		#install -p -m 0755  $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
 		echo '[Unit]' > $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
 		echo 'Description=radeon-profile daemon' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
 		echo '' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
@@ -72,12 +52,7 @@ install: build
 		echo '' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
 		echo '[Install]' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
 		echo 'WantedBy=multi-user.target' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
-		###  Upstart start scrypt
-		#cp $(CURDIR)/extra/radeon-profile-daemon.conf $(DESTDIR)/etc/init
 
-		# Add here commands to install the package into debian/your_appname
-		#$(MAKE) INSTALL_ROOT=$(DESTDIR) install
-		#install -p -m 0755 $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin/
 # Build architecture-independent files here.
 binary-indep: build install
 # We have nothing to do by default.
