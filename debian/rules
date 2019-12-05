@@ -4,6 +4,12 @@
 
 #MAKEFLAGS="-j $(grep -c ^processor /proc/cpuinfo)"
 
+MY_MAKEFLAGS=
+ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+  NUMJOBS=$(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+  MY_MAKEFLAGS=-j$(NUMJOBS)
+endif
+
 #export DH_COMPAT=3
 APPNAME := radeon-profile-daemon
 DESTDIR := $(CURDIR)/debian/$(APPNAME)
@@ -14,7 +20,7 @@ build-stamp:
 	# Build process
 	cd $(APPNAME)
 	qmake PREFIX=/usr ./$(APPNAME)/$(APPNAME).pro
-	make
+	make $(MY_MAKEFLAGS)
 	# End of build process
 
 	touch build-stamp
