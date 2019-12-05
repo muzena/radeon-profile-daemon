@@ -7,7 +7,6 @@
 #export DH_COMPAT=3
 APPNAME := radeon-profile-daemon
 DESTDIR := $(CURDIR)/debian/$(APPNAME)
-#TR_DIR=$(CURDIR)/debian/$(APPNAME)/usr/share/qt4/translations
 
 build: build-stamp
 build-stamp:
@@ -25,25 +24,19 @@ clean:
 		dh_testroot
 		rm -f build-stamp
 		# Add here commands to clean up after the build process.
-		# rm -rf builddir
 		dh_clean
 
 install: build
 		dh_testdir
 		dh_testroot
-		#dh_clean -k
 		dh_prep
 		dh_installdirs
-		#install -p -dm 0755 $(DESTDIR)/usr/bin
 		install -pdm755 $(DESTDIR)/usr/bin
 		###  Systemd directories
-		#install -p -dm 0755 $(DESTDIR)/lib/systemd/system
 		install -pdm755 $(DESTDIR)/lib/systemd/system
 		###  Copy radeon-profile-daemon
-		#install -p -m 0755 $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin/
 		install -Dm664 $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin/
 		###  Systemd start scrypt
-		#install -p -m 0755  $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
 		#install -Dm664  $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
 		echo '[Unit]' > $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
 		echo 'Description=radeon-profile daemon' >> $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
