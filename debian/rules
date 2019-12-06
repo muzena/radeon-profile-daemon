@@ -42,7 +42,7 @@ install: build
 		###  Systemd directories
 		install -pdm755 $(DESTDIR)/lib/systemd/system
 		###  Copy radeon-profile-daemon
-		install -Dm664 $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin/
+		install -Dm755 $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin/
 		###  Systemd start scrypt
 		#install -Dm664  $(CURDIR)/$(APPNAME)/extra/radeon-profile-daemon.service $(DESTDIR)/lib/systemd/system
 		echo '[Unit]' > $(DESTDIR)/lib/systemd/system/radeon-profile-daemon.service
