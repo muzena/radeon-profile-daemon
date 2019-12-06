@@ -28,7 +28,6 @@ clean:
 		dh_testroot
 		rm -f build-stamp
 		# Add here commands to clean up after the build process.
-		# rm -rf builddir
 		dh_clean
 
 install: build
@@ -41,7 +40,7 @@ install: build
 		install -pdm755 $(DESTDIR)/etc/init
 		install -pdm755 $(DESTDIR)/usr/share
 		###  Copy radeon-profile-daemon
-		install -Dm664 $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin/
+		install -Dm755 $(CURDIR)/target/$(APPNAME) $(DESTDIR)/usr/bin/
 		###  Upstart start scrypt
 		#install -Dm664  $(CURDIR)/extra/radeon-profile-daemon.conf $(DESTDIR)/etc/init
 		echo 'description "radeon-profile-daemon Upstart"' > $(DESTDIR)/etc/init/radeon-profile-daemon.conf
