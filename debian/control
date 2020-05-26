@@ -10,8 +10,8 @@ Build-Depends: debhelper (>= 9),
                gdb,
                qt59-meta-full | qt5-default | qt56-meta-full,
                qt59tools | qt56tools | qttools5-dev-tools,
-               libqt4-dev,
-               qt4-qmake,
+#               libqt4-dev,
+#               qt4-qmake,
                qt5-qmake 
 Standards-Version: 4.0.0
 Homepage: https://github.com/marazmista/radeon-profile-daemon
